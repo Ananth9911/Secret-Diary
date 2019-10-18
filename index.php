@@ -9,8 +9,11 @@
         unset($_SESSION);
         setcookie("id", "", time() - 60*60);
         $_COOKIE["id"] = "";  
-        
         session_destroy();
+        
+        //closing the data base connection after destroying session, would prevent from data leakage and other objects reusing the same connection. 
+        include("connection.php");
+        mysqli_close($link);
         
     } else if ((array_key_exists("id", $_SESSION) AND $_SESSION['id']) OR (array_key_exists("id", $_COOKIE) AND $_COOKIE['id'])) {
         
